@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  main:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - name: Set ref vars
+        id: refs
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+
+      - name: Setup repo
+        run: |
+          git clone https://github.com/figment-networks/gaia
+          cd gaia
+          git checkout ${{ steps.refs.outputs.SOURCE_TAG }}-dm
+          go mod download
+          mkdir binaries
+
+      - name: Download deps
+        working-directory: gaia
+        run: go mod download
+
+      - name: Build binaries
+        working-directory: gaia
+        run: |
+          GOOS=linux   GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_linux_amd64
+          GOOS=darwin  GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_darwin_amd64
+          GOOS=darwin  GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_darwin_arm64
+          GOOS=windows GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_windows_amd64
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          artifacts: "gaia/binaries/gaiad_*"
+          allowUpdates: true
