@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   main:
@@ -29,7 +29,7 @@ jobs:
         run: |
           git clone https://github.com/figment-networks/gaia
           cd gaia
-          git checkout ${{ steps.refs.outputs.SOURCE_TAG }}-dm
+          git checkout ${{ steps.refs.outputs.SOURCE_TAG }}-deepmind
           go mod download
           mkdir binaries
 
