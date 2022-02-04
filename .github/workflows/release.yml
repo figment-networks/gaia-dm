@@ -40,10 +40,11 @@ jobs:
       - name: Build binaries
         working-directory: gaia
         run: |
-          GOOS=linux   GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_linux_amd64
-          GOOS=darwin  GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_darwin_amd64
-          GOOS=darwin  GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_darwin_arm64
-          GOOS=windows GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_windows_amd64
+          GOOS=linux   GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_linux_amd64
+          GOOS=linux   GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_linux_arm64
+          GOOS=darwin  GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_darwin_amd64
+          GOOS=darwin  GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_darwin_arm64
+          GOOS=windows GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_windows_amd64
 
       - name: Create Release
         uses: ncipollo/release-action@v1
