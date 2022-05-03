@@ -7,6 +7,7 @@ This repository contains a workflow that builds the Firehose implementation of G
 - `v4.2.1-fh`
 - `v5.0.8-fh`
 - `v6.0.0-fh`
+- `v7.0.0-fh`
 
 ## Build steps
 
