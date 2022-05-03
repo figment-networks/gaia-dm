@@ -29,7 +29,7 @@ jobs:
         run: |
           git clone https://github.com/figment-networks/gaia
           cd gaia
-          git checkout ${{ steps.refs.outputs.SOURCE_TAG }}-deepmind
+          git checkout ${{ steps.refs.outputs.SOURCE_TAG }}-fh
           go mod download
           mkdir binaries
 
@@ -40,11 +40,11 @@ jobs:
       - name: Build binaries
         working-directory: gaia
         run: |
-          GOOS=linux   GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_deepmind_linux_amd64
-          GOOS=linux   GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_deepmind_linux_arm64
-          GOOS=darwin  GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_deepmind_darwin_amd64
-          GOOS=darwin  GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_deepmind_darwin_arm64
-          GOOS=windows GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_deepmind_windows_amd64
+          GOOS=linux   GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_firehose_linux_amd64
+          GOOS=linux   GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_firehose_linux_arm64
+          GOOS=darwin  GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_firehose_darwin_amd64
+          GOOS=darwin  GOARCH=arm64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_firehose_darwin_arm64
+          GOOS=windows GOARCH=amd64 make build && cp ./build/gaiad binaries/gaiad_${GITHUB_REF#refs/*/}_firehose_windows_amd64
 
       - name: Create Release
         uses: ncipollo/release-action@v1
